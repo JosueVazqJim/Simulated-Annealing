@@ -40,15 +40,17 @@
     <Label text="Tasa de Enfriamiento:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
     <TextField fx:id="txtCoolingRate" promptText="Ej. 0.003" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
+    <Label text="Iteraciones por Temperatura:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtIterTemp" promptText="Ej. 5" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
     <!-- Dominio -->
-    <Label text="Dominio (mín,máx):" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-    <TextField fx:id="txtDomain" promptText="Ej. -10,10" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    <Label text="Dominio (mín,máx):" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtDomain" promptText="Ej. -10,10" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
     <!-- Toggle discreto/continuo -->
-    <Label text="Modo de Búsqueda:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-    <ToggleButton fx:id="toggleMode" text="Continuo" GridPane.rowIndex="5" GridPane.columnIndex="1"
-                  onAction="#onToggleMode"
-                  style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
+    <Label text="Modo de Búsqueda:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="comboMode" GridPane.rowIndex="6" GridPane.columnIndex="1"
+        style="-fx-background-color: daedf2; -fx-text-fill: #2c3e50; -fx-border-color: #b0c4cc; -fx-border-width: 1px;"/>
   </GridPane>
 
   <Button text="Ejecutar Simulación"

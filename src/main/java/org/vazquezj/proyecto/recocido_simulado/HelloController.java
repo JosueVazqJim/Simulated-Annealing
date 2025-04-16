@@ -1,17 +1,22 @@
 package org.vazquezj.proyecto.recocido_simulado;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 
-public class HelloController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class HelloController implements Initializable {
 
     @FXML private TextField txtObjectiveFunction;
     @FXML private TextField txtInitialTemp;
     @FXML private TextField txtMinTemp;
     @FXML private TextField txtCoolingRate;
     @FXML private TextField txtDomain;
-    @FXML private ToggleButton toggleMode;
+    @FXML private TextField txtIterTemp;
+    @FXML private ComboBox comboMode;
     @FXML private TextArea txtOutput;
 
     @FXML
@@ -33,7 +38,9 @@ public class HelloController {
             };
 
             // Obtener tipo de problema
-            String tipoProblema = toggleMode.isSelected() ? "discreto" : "continuo";
+            String tipoProblema = comboMode.getValue().toString().toLowerCase();
+
+            int iterTemp = Integer.parseInt(txtIterTemp.getText().trim());
 
             // Crear y ejecutar
             RecocidoSimulado recocido = new RecocidoSimulado(
@@ -41,7 +48,7 @@ public class HelloController {
                     tipoProblema,
                     dominio,
                     funcion,
-                    5, // iteraciones por temperatura (podrías agregar otro TextField si quieres hacerlo configurable)
+                    iterTemp, // iteraciones por temperatura (podrías agregar otro TextField si quieres hacerlo configurable)
                     temperaturaInicial,
                     temperaturaMinima,
                     tasaEnfriamiento
@@ -64,12 +71,9 @@ public class HelloController {
                 .evaluate();
     }
 
-    @FXML
-    protected void onToggleMode(ActionEvent event) {
-        if (toggleMode.isSelected()) {
-            toggleMode.setText("Discreto");
-        } else {
-            toggleMode.setText("Continuo");
-        }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        comboMode.getItems().setAll("Discreto", "Continuo");
+        comboMode.getSelectionModel().selectFirst(); // Selecciona el primer elemento por defecto
     }
 }
