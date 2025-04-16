@@ -33,6 +33,7 @@ Java implementation of the Simulated Annealing algorithm for single-variable opt
 git clone https://github.com/yourusername/Simulated-Annealing.git
 cd Simulated-Annealing
 mvn clean package
+```
 
 
 ## Configuration Options
