@@ -11,6 +11,9 @@
 
 ![Continuous Optimization Example](/docs/images/app_runnin_parameters_continue.png)
 ![Discrete Optimization Example](/docs/images/app_runnin_parameters_discrete.png)
+![Logs Example](/docs/images/app_runnin_1.png)
+![Graphs Example](/docs/images/app_runnin_2.png)
+
 
 ## Overview
 Java implementation of the Simulated Annealing algorithm for single-variable optimization problems, supporting both continuous and discrete search spaces. The algorithm efficiently finds global optima while avoiding local traps through controlled temperature cooling.
@@ -60,8 +63,8 @@ mvn clean package
 The program provides:
 - Optimal solution found
 - Objective function value
-- Convergence statistics
-- Optional visualization (requires Python matplotlib)
+- Logs of iterations
+- Graphs of temperature and objective function value over iterations
 
 ## Performance Tips
 
