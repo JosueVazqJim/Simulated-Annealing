@@ -8,7 +8,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       xmlns="http://javafx.com/javafx/23.0.1"
       fx:controller="org.vazquezj.proyecto.recocido_simulado.HelloController"
-      alignment="TOP_CENTER" spacing="20.0" prefWidth="600" prefHeight="650"
+      alignment="TOP_CENTER" spacing="20.0" prefWidth="900" prefHeight="800"
       style="-fx-background-color: #f0f4f8;">
 
   <padding>
@@ -16,55 +16,74 @@
   </padding>
 
   <Label text="Simulación por Recocido Simulado"
-         style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+         style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
 
-  <GridPane hgap="15" vgap="15" alignment="CENTER">
+  <GridPane hgap="20" vgap="15" alignment="CENTER">
     <columnConstraints>
       <ColumnConstraints halignment="RIGHT"/>
-      <ColumnConstraints halignment="LEFT"/>
+      <ColumnConstraints halignment="LEFT" percentWidth="80"/>
     </columnConstraints>
 
-    <!-- Función objetivo -->
-    <Label text="Función Objetivo:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-    <TextField fx:id="txtObjectiveFunction" promptText="Ej. x^2 + 3x - 5" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    <!-- Aumentamos tamaño de fuente en etiquetas e inputs -->
+    <Label text="Función Objetivo:" style="-fx-font-size: 14px;" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtObjectiveFunction" promptText="Ej. x^2 + 3x - 5" style="-fx-font-size: 14px;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-    <!-- Temperatura inicial -->
-    <Label text="Temperatura Inicial:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-    <TextField fx:id="txtInitialTemp" promptText="Ej. 1000.0" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <Label text="Temperatura Inicial:" style="-fx-font-size: 14px;" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtInitialTemp" promptText="Ej. 1000.0" style="-fx-font-size: 14px;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-    <!-- Temperatura mínima -->
-    <Label text="Temperatura Mínima:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-    <TextField fx:id="txtMinTemp" promptText="Ej. 0.1" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    <Label text="Temperatura Mínima:" style="-fx-font-size: 14px;" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtMinTemp" promptText="Ej. 0.1" style="-fx-font-size: 14px;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-    <!-- Tasa de enfriamiento -->
-    <Label text="Tasa de Enfriamiento:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-    <TextField fx:id="txtCoolingRate" promptText="Ej. 0.003" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+    <Label text="Tasa de Enfriamiento:" style="-fx-font-size: 14px;" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtCoolingRate" promptText="Ej. 0.003" style="-fx-font-size: 14px;" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-    <Label text="Iteraciones por Temperatura:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-    <TextField fx:id="txtIterTemp" promptText="Ej. 5" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    <Label text="Iteraciones por Temperatura:" style="-fx-font-size: 14px;" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtIterTemp" promptText="Ej. 5" style="-fx-font-size: 14px;" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-    <!-- Dominio -->
-    <Label text="Dominio (mín,máx):" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-    <TextField fx:id="txtDomain" promptText="Ej. -10,10" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+    <Label text="Dominio (mín,máx):" style="-fx-font-size: 14px;" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtDomain" promptText="Ej. -10,10" style="-fx-font-size: 14px;" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-    <!-- Toggle discreto/continuo -->
-    <Label text="Modo de Búsqueda:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-    <ComboBox fx:id="comboMode" GridPane.rowIndex="6" GridPane.columnIndex="1"
-        style="-fx-background-color: daedf2; -fx-text-fill: #2c3e50; -fx-border-color: #b0c4cc; -fx-border-width: 1px;"/>
+    <Label text="Modo de Búsqueda:" style="-fx-font-size: 14px;" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="comboMode"
+              style="-fx-background-color: daedf2; -fx-text-fill: #2c3e50; -fx-border-color: #b0c4cc; -fx-border-width: 1px; -fx-font-size: 14px;"
+              GridPane.rowIndex="6" GridPane.columnIndex="1"/>
   </GridPane>
 
   <Button text="Ejecutar Simulación"
           fx:id="btnRun"
           onAction="#onRunSimulation"
-          style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20 10 20;"/>
+          style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 20 10 20;"/>
 
-  <Label text="Resultado:"
-         style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;"/>
+  <Label text="Mejor Solución:"
+         style="-fx-font-size: 16px; -fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
 
+  <!-- Texto de salida más pequeño y contenido compacto -->
   <TextArea fx:id="txtOutput"
             editable="false"
             wrapText="true"
-            prefRowCount="10"
-            style="-fx-font-family: monospace;"/>
+            prefRowCount="4"
+            maxWidth="600"
+            style="-fx-font-family: monospace; -fx-font-size: 14px; -fx-control-inner-background: #eaf1f6; -fx-border-color: #c3d0db;"/>
+
+  <TabPane prefHeight="400" prefWidth="800"
+           style="-fx-font-size: 14px;">
+    <tabs>
+      <Tab text="Logs Iteración">
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+          <TextArea fx:id="txtLog"
+                    editable="false"
+                    wrapText="true"
+                    style="-fx-font-family: monospace; -fx-font-size: 13px;"/>
+        </ScrollPane>
+      </Tab>
+      <Tab text="Gráficos">
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+          <VBox fx:id="chartContainer" spacing="10" alignment="CENTER"
+                style="-fx-background-color: white; -fx-padding: 10;">
+          </VBox>
+        </ScrollPane>
+      </Tab>
+    </tabs>
+  </TabPane>
 
 </VBox>

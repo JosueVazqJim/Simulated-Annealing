@@ -2,7 +2,11 @@ package org.vazquezj.proyecto.recocido_simulado;
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class RecocidoSimulado {
 	private final Expression funcionObjetivo;
@@ -16,7 +20,11 @@ public class RecocidoSimulado {
 	private final float tasaEnfriamiento;
 	private final Random random;
 
-	public RecocidoSimulado(String objetivo, String tipo, double[] dominio, String funcionObjetivo) {
+	private Consumer<String> logger;
+	private List<Double> temperaturaPorIteracion = new ArrayList<>();
+	private List<Double> valorFuncionPorIteracion = new ArrayList<>();
+
+	public RecocidoSimulado(String objetivo, String tipo, double[] dominio, String funcionObjetivo, Consumer<String> logger) {
 		this.objetivo = TipoOptimizacion.fromString(objetivo);
 		this.tipo = TipoProblema.fromString(tipo);
 		this.dominio = dominio.clone();
@@ -27,10 +35,11 @@ public class RecocidoSimulado {
 		this.temperaturaInicial = 1000;
 		this.temperaturaMinima = 1;
 		this.tasaEnfriamiento = 0.95f;
+		this.logger = logger;
 	}
 
 	public RecocidoSimulado(String objetivo, String tipo, double[] dominio, String funcionObjetivo, int iteracionesPorTemperatura,
-	                        double temperaturaInicial, double temperaturaMinima, float tasaEnfriamiento) {
+	                        double temperaturaInicial, double temperaturaMinima, float tasaEnfriamiento, Consumer<String> logger) {
 		this.objetivo = TipoOptimizacion.fromString(objetivo);
 		this.tipo = TipoProblema.fromString(tipo);
 		this.dominio = dominio.clone();
@@ -41,12 +50,14 @@ public class RecocidoSimulado {
 		this.temperaturaInicial = temperaturaInicial;
 		this.temperaturaMinima = temperaturaMinima;
 		this.tasaEnfriamiento = tasaEnfriamiento;
+		this.logger = logger;
 	}
 
 	public double optimizar() {
 		double mejorSolucion = solucionInicial;
 		double solucionActual = solucionInicial;
 		double temperatura = temperaturaInicial;
+		int contadorIteracion = 0;
 
 		while (temperatura > temperaturaMinima) {
 			for (int i = 0; i < iteracionesPorTemperatura; i++) {
@@ -59,6 +70,14 @@ public class RecocidoSimulado {
 				if (esMejorSolucion(solucionActual, mejorSolucion)) {
 					mejorSolucion = solucionActual;
 				}
+
+				double valorActual = evaluarFuncion(solucionActual);
+				temperaturaPorIteracion.add(temperatura);
+				valorFuncionPorIteracion.add(valorActual);
+
+				// Log
+				logger.accept(String.format("Iteración %d - T: %.4f, x: %.4f, f(x): %.4f",
+						++contadorIteracion, temperatura, solucionActual, valorActual));
 			}
 			temperatura *= tasaEnfriamiento;
 		}
@@ -90,6 +109,10 @@ public class RecocidoSimulado {
 		if (delta <= 0) {
 			return true;
 		}
+
+		if (objetivo == TipoOptimizacion.MAXIMIZAR) {
+			delta = -delta;
+		}
 		return Math.exp(-delta / temperatura) > random.nextDouble();
 	}
 
@@ -103,6 +126,14 @@ public class RecocidoSimulado {
 	private double evaluarFuncion(double x) {
 		funcionObjetivo.setVariable("x", x);
 		return funcionObjetivo.evaluate();
+	}
+
+	public List<Double> getTemperaturaPorIteracion() {
+		return temperaturaPorIteracion;
+	}
+
+	public List<Double> getValorFuncionPorIteracion() {
+		return valorFuncionPorIteracion;
 	}
 
 	private enum TipoOptimizacion {

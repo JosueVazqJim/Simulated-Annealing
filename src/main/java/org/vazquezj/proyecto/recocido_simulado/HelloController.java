@@ -2,10 +2,15 @@ package org.vazquezj.proyecto.recocido_simulado;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
@@ -18,6 +23,9 @@ public class HelloController implements Initializable {
     @FXML private TextField txtIterTemp;
     @FXML private ComboBox comboMode;
     @FXML private TextArea txtOutput;
+    @FXML private TextArea txtLog;
+    @FXML private VBox chartContainer;
+
 
     @FXML
     protected void onRunSimulation(ActionEvent event) {
@@ -51,16 +59,19 @@ public class HelloController implements Initializable {
                     iterTemp, // iteraciones por temperatura (podrías agregar otro TextField si quieres hacerlo configurable)
                     temperaturaInicial,
                     temperaturaMinima,
-                    tasaEnfriamiento
+                    tasaEnfriamiento,
+                    msg -> txtLog.appendText(msg + "\n") // Logging en tiempo real
             );
 
             double solucion = recocido.optimizar();
 
             txtOutput.setText("Mejor solución encontrada: x = " + solucion +
                     "\nValor: f(x) = " + evaluarFuncion(funcion, solucion));
+            mostrarGraficos(recocido.getTemperaturaPorIteracion(), recocido.getValorFuncionPorIteracion());
         } catch (Exception e) {
             txtOutput.setText("Error: " + e.getMessage());
         }
+
     }
 
     private double evaluarFuncion(String funcion, double x) {
@@ -76,4 +87,32 @@ public class HelloController implements Initializable {
         comboMode.getItems().setAll("Discreto", "Continuo");
         comboMode.getSelectionModel().selectFirst(); // Selecciona el primer elemento por defecto
     }
+
+    private void mostrarGraficos(List<Double> temperaturas, List<Double> valores) {
+        chartContainer.getChildren().clear();
+
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxisTemp = new NumberAxis();
+        LineChart<Number, Number> tempChart = new LineChart<>(xAxis, yAxisTemp);
+        tempChart.setTitle("Temperatura vs Iteración");
+
+        XYChart.Series<Number, Number> tempSeries = new XYChart.Series<>();
+        for (int i = 0; i < temperaturas.size(); i++) {
+            tempSeries.getData().add(new XYChart.Data<>(i, temperaturas.get(i)));
+        }
+        tempChart.getData().add(tempSeries);
+
+        NumberAxis yAxisValor = new NumberAxis();
+        LineChart<Number, Number> valorChart = new LineChart<>(xAxis, yAxisValor);
+        valorChart.setTitle("f(x) vs Iteración");
+
+        XYChart.Series<Number, Number> valorSeries = new XYChart.Series<>();
+        for (int i = 0; i < valores.size(); i++) {
+            valorSeries.getData().add(new XYChart.Data<>(i, valores.get(i)));
+        }
+        valorChart.getData().add(valorSeries);
+
+        chartContainer.getChildren().addAll(tempChart, valorChart);
+    }
+
 }
